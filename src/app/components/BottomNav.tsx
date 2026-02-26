@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from "react-router";
 import { motion } from "motion/react";
 
 const navItems = [
-  { path: "/", icon: Home, label: "Home" },
-  { path: "/log", icon: ClipboardPlus, label: "Log" },
-  { path: "/history", icon: History, label: "History" },
-  { path: "/insights", icon: Lightbulb, label: "Insights" },
+  { path: "/app", icon: Home, label: "Home" },
+  { path: "/app/log", icon: ClipboardPlus, label: "Log" },
+  { path: "/app/history", icon: History, label: "History" },
+  { path: "/app/insights", icon: Lightbulb, label: "Insights" },
 ];
 
 export function BottomNav() {

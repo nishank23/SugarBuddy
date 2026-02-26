@@ -4,15 +4,15 @@ import { HomePage } from "./components/HomePage";
 import { LogPage } from "./components/LogPage";
 import { HistoryPage } from "./components/HistoryPage";
 import { InsightsPage } from "./components/InsightsPage";
-import { OnboardingPage } from "./components/OnboardingPage";
+import { OnboardingFlow } from "./components/OnboardingFlow";
 
 export const router = createBrowserRouter([
   {
-    path: "/onboarding",
-    Component: OnboardingPage,
+    path: "/",
+    Component: OnboardingFlow,
   },
   {
-    path: "/",
+    path: "/app",
     Component: Layout,
     children: [
       { index: true, Component: HomePage },
