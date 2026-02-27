@@ -2,6 +2,8 @@ import { useState, useCallback } from "react";
 import { GlucoseBuddy } from "./GlucoseBuddy";
 import { motion } from "motion/react";
 import { Droplets, Clock, TrendingUp, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router";
+import { characters, CharacterAvatar } from "./onboarding/CharacterSelectionScreen";
 
 const quickRanges = [
   { label: "Low", value: 55, color: "#A29BFE" },
@@ -23,11 +25,38 @@ function getTimeAgo(mins: number): string {
   return `${Math.floor(mins / 60)}h ${mins % 60}m ago`;
 }
 
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return "Good morning";
+  if (hour >= 12 && hour < 17) return "Good afternoon";
+  if (hour >= 17 && hour < 22) return "Good evening";
+  return "Good night";
+}
+
+function getOnboardingData() {
+  try {
+    const raw = localStorage.getItem("sugarBuddyOnboarding");
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function HomePage() {
+  const navigate = useNavigate();
   const [glucose, setGlucose] = useState(120);
   const [showQuickPick, setShowQuickPick] = useState(false);
   const [lastReadingTime] = useState(5);
   const [trend] = useState<"up" | "down" | "flat">("flat");
+
+  // Load onboarding data
+  const onboardingData = getOnboardingData();
+  const userName = onboardingData?.userName || "Friend";
+  const characterId = onboardingData?.characterId || "coral";
+  const buddyName = onboardingData?.buddyName || "Buddy";
+
+  const char = characters.find((c) => c.id === characterId) || characters[0];
+  const characterColor = char.bodyColor;
 
   const range = getRangeLabel(glucose);
 
@@ -46,18 +75,47 @@ export function HomePage() {
       {/* Header */}
       <div className="px-5 pt-6 pb-2 flex items-center justify-between">
         <div>
-          <p className="text-[0.85rem]" style={{ color: "#B0A8C0" }}>Good morning! ☀️</p>
+          <p className="text-[0.85rem]" style={{ color: "#B0A8C0" }}>
+            {getGreeting()} 👋
+          </p>
           <h1 className="text-[1.4rem]" style={{ color: "#4A4A6A", fontWeight: 800 }}>
-            Sugar Buddy
+            Hey, {userName}!
           </h1>
         </div>
-        <motion.div
-          className="w-11 h-11 rounded-full flex items-center justify-center"
-          style={{ background: "#FF6B6B20" }}
-          whileTap={{ scale: 0.95 }}
+
+        {/* Buddy avatar tap → Settings */}
+        <motion.button
+          onClick={() => navigate("/app/settings")}
+          className="relative"
+          whileTap={{ scale: 0.92 }}
+          style={{ outline: "none" }}
         >
-          <span className="text-[1.3rem]">🧸</span>
-        </motion.div>
+          <div
+            className="w-[42px] h-[42px] rounded-full flex items-center justify-center overflow-hidden"
+            style={{
+              border: "2.5px solid #FF6B6B",
+              background: `${characterColor}18`,
+              boxShadow: "0 2px 12px rgba(255, 107, 107, 0.25)",
+            }}
+          >
+            <div style={{ marginBottom: -6 }}>
+              <CharacterAvatar char={char} size={38} />
+            </div>
+          </div>
+          {/* Tiny settings dot */}
+          <div
+            className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center"
+            style={{ background: "#FF6B6B", border: "1.5px solid white" }}
+          >
+            <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
+              <circle cx="3.5" cy="3.5" r="1.5" fill="white" />
+              <circle cx="3.5" cy="1" r="0.6" fill="white" />
+              <circle cx="3.5" cy="6" r="0.6" fill="white" />
+              <circle cx="1" cy="3.5" r="0.6" fill="white" />
+              <circle cx="6" cy="3.5" r="0.6" fill="white" />
+            </svg>
+          </div>
+        </motion.button>
       </div>
 
       {/* Quick Stats Bar */}
@@ -103,7 +161,27 @@ export function HomePage() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <GlucoseBuddy glucose={glucose} name="Buddy" color="#FF6B6B" />
+        <GlucoseBuddy glucose={glucose} name={buddyName} color={characterColor} />
+
+        {/* Buddy Name Badge */}
+        <motion.div
+          className="flex items-center gap-1.5 px-4 py-1.5 rounded-full mt-2"
+          style={{
+            background: "linear-gradient(135deg, #FF6B6B18, #FF8E8E10)",
+            border: "1.5px solid #FF6B6B30",
+          }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55 }}
+        >
+          <span style={{ fontSize: "0.9rem" }}>🐻</span>
+          <span
+            className="text-[0.78rem]"
+            style={{ color: "#FF6B6B", fontWeight: 700 }}
+          >
+            {buddyName}
+          </span>
+        </motion.div>
       </motion.div>
 
       {/* Glucose Reading Card */}

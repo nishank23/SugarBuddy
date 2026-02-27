@@ -5,6 +5,8 @@ import { LogPage } from "./components/LogPage";
 import { HistoryPage } from "./components/HistoryPage";
 import { InsightsPage } from "./components/InsightsPage";
 import { OnboardingFlow } from "./components/OnboardingFlow";
+import { SettingsPage } from "./components/SettingsPage";
+import { ChangeBuddyPage } from "./components/ChangeBuddyPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,5 +22,13 @@ export const router = createBrowserRouter([
       { path: "history", Component: HistoryPage },
       { path: "insights", Component: InsightsPage },
     ],
+  },
+  {
+    path: "/app/settings",
+    Component: SettingsPage,
+  },
+  {
+    path: "/app/change-buddy",
+    Component: ChangeBuddyPage,
   },
 ]);

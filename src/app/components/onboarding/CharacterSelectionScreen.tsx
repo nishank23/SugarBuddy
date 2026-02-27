@@ -71,9 +71,11 @@ export const characters: CharacterOption[] = [
 export function CharacterAvatar({
   char,
   size = 90,
+  sad = false,
 }: {
   char: CharacterOption;
   size?: number;
+  sad?: boolean;
 }) {
   return (
     <svg
@@ -95,42 +97,44 @@ export function CharacterAvatar({
       <circle cx="68" cy="28" r="10" fill={char.bodyColor} />
       <circle cx="68" cy="28" r="5.5" fill={char.earInner} opacity="0.5" />
 
+      {/* Sad eyebrows */}
+      {sad && (
+        <>
+          <path d="M29 36 Q36 32 43 36" stroke="#4A4A6A" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.7" />
+          <path d="M47 36 Q54 32 61 36" stroke="#4A4A6A" strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.7" />
+        </>
+      )}
+
       {/* Eyes */}
       <circle cx="36" cy="44" r="5.5" fill="white" stroke="#4A4A6A" strokeWidth="1.5" />
-      <circle cx="37" cy="43" r="3.2" fill="#4A4A6A" />
-      <circle cx="38.5" cy="41.5" r="1.3" fill="white" />
+      <circle cx={sad ? "36" : "37"} cy={sad ? "45" : "43"} r="3.2" fill="#4A4A6A" />
+      {!sad && <circle cx="38.5" cy="41.5" r="1.3" fill="white" />}
       <circle cx="54" cy="44" r="5.5" fill="white" stroke="#4A4A6A" strokeWidth="1.5" />
-      <circle cx="55" cy="43" r="3.2" fill="#4A4A6A" />
-      <circle cx="56.5" cy="41.5" r="1.3" fill="white" />
+      <circle cx={sad ? "54" : "55"} cy={sad ? "45" : "43"} r="3.2" fill="#4A4A6A" />
+      {!sad && <circle cx="56.5" cy="41.5" r="1.3" fill="white" />}
 
-      {/* Mouth - cute smile */}
-      <path
-        d="M38 56 Q45 63 52 56"
-        stroke="#4A4A6A"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
+      {/* Mouth */}
+      {sad ? (
+        <path d="M38 62 Q45 56 52 62" stroke="#4A4A6A" strokeWidth="2" strokeLinecap="round" fill="none" />
+      ) : (
+        <path d="M38 56 Q45 63 52 56" stroke="#4A4A6A" strokeWidth="2" strokeLinecap="round" fill="none" />
+      )}
 
       {/* Cheeks */}
       <ellipse cx="28" cy="52" rx="5.5" ry="3.5" fill={char.cheekColor} opacity="0.6" />
       <ellipse cx="62" cy="52" rx="5.5" ry="3.5" fill={char.cheekColor} opacity="0.6" />
 
+      {/* Tear drop when sad */}
+      {sad && (
+        <>
+          <ellipse cx="28" cy="58" rx="2" ry="3" fill="#87CEEB" opacity="0.85" />
+          <path d="M26.5 56 Q28 52.5 29.5 56" fill="#87CEEB" opacity="0.85" />
+        </>
+      )}
+
       {/* Arms */}
-      <path
-        d="M20 52 Q10 48 8 40"
-        stroke={char.bodyColor}
-        strokeWidth="5.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d="M70 52 Q80 48 82 40"
-        stroke={char.bodyColor}
-        strokeWidth="5.5"
-        strokeLinecap="round"
-        fill="none"
-      />
+      <path d="M20 52 Q10 48 8 40" stroke={char.bodyColor} strokeWidth="5.5" strokeLinecap="round" fill="none" />
+      <path d="M70 52 Q80 48 82 40" stroke={char.bodyColor} strokeWidth="5.5" strokeLinecap="round" fill="none" />
 
       {/* Feet */}
       <ellipse cx="35" cy="78" rx="9" ry="5" fill={char.bodyColor} />

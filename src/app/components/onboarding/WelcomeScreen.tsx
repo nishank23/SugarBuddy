@@ -4,188 +4,275 @@ interface WelcomeScreenProps {
   onContinue: () => void;
 }
 
+function LogoIcon() {
+  return (
+    <svg
+      width="110"
+      height="110"
+      viewBox="0 0 110 110"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="sq" x1="0" y1="0" x2="110" y2="110" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FF6B6B" />
+          <stop offset="100%" stopColor="#FF8E53" />
+        </linearGradient>
+        {/* Top-edge inner gloss */}
+        <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="white" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </linearGradient>
+        {/* Glucose drop glow */}
+        <radialGradient id="dropGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      {/* Rounded square body */}
+      <rect width="110" height="110" rx="28" fill="url(#sq)" />
+
+      {/* Top gloss sheen */}
+      <rect width="110" height="55" rx="28" fill="url(#gloss)" />
+
+      {/* ── Face ── */}
+
+      {/* Left eye — solid white dot + tiny shine */}
+      <circle cx="39" cy="46" r="5" fill="white" />
+      <circle cx="41" cy="44" r="1.6" fill="white" opacity="0.55" />
+
+      {/* Right eye */}
+      <circle cx="71" cy="46" r="5" fill="white" />
+      <circle cx="73" cy="44" r="1.6" fill="white" opacity="0.55" />
+
+      {/* Smooth smile curve */}
+      <path
+        d="M36 62 Q55 78 74 62"
+        stroke="white"
+        strokeWidth="3.8"
+        strokeLinecap="round"
+        fill="none"
+      />
+
+      {/* ── Glucose drop / heart at bottom center ── */}
+      {/* Glow halo behind the drop */}
+      <circle cx="55" cy="90" r="9" fill="url(#dropGlow)" />
+
+      {/* Drop shape: two arcs meeting at a point */}
+      <path
+        d="M55 80 C46 80 42 86 42 90 C42 96 48 100 55 100 C62 100 68 96 68 90 C68 86 64 80 55 80Z"
+        fill="none"
+      />
+      {/* Simplified clean teardrop */}
+      <path
+        d="M55 79 C51 79 47 83 47 88 C47 93 50.5 97 55 97 C59.5 97 63 93 63 88 C63 83 59 79 55 79Z"
+        fill="white"
+        opacity="0.88"
+      />
+      {/* Heart notch at top of drop */}
+      <path
+        d="M51 80 Q55 76 59 80"
+        stroke="white"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.88"
+      />
+      {/* Tiny shine on drop */}
+      <circle cx="51" cy="86" r="1.5" fill="white" opacity="0.5" />
+    </svg>
+  );
+}
+
 export function WelcomeScreen({ onContinue }: WelcomeScreenProps) {
-  // Four buddy characters for welcome screen
-  const welcomeBuddies = [
-    { color: "#FF6B6B", delay: 0 },
-    { color: "#4ECDC4", delay: 0.1 },
-    { color: "#FED766", delay: 0.2 },
-    { color: "#A29BFE", delay: 0.3 },
-  ];
-
-  const features = [
-    { emoji: "🎮", text: "Gamified tracking" },
-    { emoji: "💬", text: "Zero judgment" },
-    { emoji: "⏰", text: "Gentle reminders" },
-  ];
-
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, #FF6B6B20 0%, #FED76630 100%)",
+        background: "#0F0E17",
         fontFamily: "Nunito, sans-serif",
       }}
     >
-      {/* Floating colorful dots background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              width: 8 + Math.random() * 16,
-              height: 8 + Math.random() * 16,
-              background: ["#FF6B6B40", "#4ECDC440", "#FED76640", "#A29BFE40"][i % 4],
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, Math.random() * 10 - 5, 0],
-              opacity: [0.3, 0.7, 0.3],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
+      {/* ── 3 ambient glow orbs ── */}
+      {/* Coral — bottom left */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          left: "-15%",
+          bottom: "-8%",
+          width: 420,
+          height: 420,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,107,107,0.28) 0%, transparent 65%)",
+          filter: "blur(60px)",
+        }}
+        animate={{ scale: [1, 1.08, 1], opacity: [0.8, 1, 0.8] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
-        {/* Logo/App Name */}
+      {/* Purple — top right */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          right: "-12%",
+          top: "-5%",
+          width: 380,
+          height: 380,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(139,92,246,0.22) 0%, transparent 65%)",
+          filter: "blur(70px)",
+        }}
+        animate={{ scale: [1, 1.06, 1], opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+      />
+
+      {/* Blue — center-ish */}
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          left: "25%",
+          top: "35%",
+          width: 280,
+          height: 280,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 65%)",
+          filter: "blur(80px)",
+        }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.9, 0.6] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+      />
+
+      {/* ── Main content — centered ── */}
+      <div className="flex-1 flex flex-col items-center justify-center px-8 relative z-10">
+
+        {/* Logo with pulsing glow ring */}
         <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          className="relative mb-9"
+          initial={{ opacity: 0, scale: 0.72 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.65, ease: [0.34, 1.56, 0.64, 1], delay: 0.1 }}
         >
-          <h1
-            className="text-[2.2rem] text-center mb-2"
-            style={{ color: "#4A4A6A", fontWeight: 900, letterSpacing: "-0.02em" }}
+          {/* Outer pulse ring */}
+          <motion.div
+            className="absolute rounded-[32px]"
+            style={{
+              inset: -4,
+              border: "1.5px solid rgba(255,107,107,0.5)",
+              borderRadius: 34,
+            }}
+            animate={{ opacity: [0.6, 0, 0.6], scale: [1, 1.16, 1] }}
+            transition={{ duration: 2.6, repeat: Infinity, ease: "easeOut" }}
+          />
+          {/* Soft glow underneath */}
+          <motion.div
+            className="absolute rounded-[28px]"
+            style={{
+              inset: 0,
+              boxShadow: "0 0 40px 0px rgba(255,107,107,0.55)",
+              borderRadius: 28,
+            }}
+            animate={{ boxShadow: [
+              "0 0 30px 0px rgba(255,107,107,0.45)",
+              "0 0 55px 6px rgba(255,107,107,0.65)",
+              "0 0 30px 0px rgba(255,107,107,0.45)",
+            ]}}
+            transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Gentle float */}
+          <motion.div
+            animate={{ y: [0, -7, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            Sugar Buddy
-          </h1>
+            <LogoIcon />
+          </motion.div>
         </motion.div>
 
-        {/* Character Row */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          {welcomeBuddies.map((buddy, i) => (
-            <motion.div
-              key={i}
-              className="w-16 h-16 rounded-full flex items-center justify-center"
-              style={{
-                background: `linear-gradient(135deg, ${buddy.color}40, ${buddy.color}20)`,
-                border: `3px solid ${buddy.color}`,
-                boxShadow: `0 4px 16px ${buddy.color}30`,
-              }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 0.4 + buddy.delay,
-                type: "spring",
-                stiffness: 200,
-              }}
-            >
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: buddy.delay,
-                }}
-              >
-                {/* Simple buddy face */}
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="11" cy="14" r="2" fill={buddy.color} />
-                  <circle cx="21" cy="14" r="2" fill={buddy.color} />
-                  <path
-                    d="M10 20 Q16 24 22 20"
-                    stroke={buddy.color}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    fill="none"
-                  />
-                </svg>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Title */}
-        <motion.h2
-          className="text-[1.6rem] text-center mb-2 px-6"
-          style={{ color: "#4A4A6A", fontWeight: 800 }}
-          initial={{ opacity: 0, y: 10 }}
+        {/* App name — gradient white→coral */}
+        <motion.h1
+          className="text-center mb-3"
+          style={{
+            background: "linear-gradient(135deg, #FFFFFF 0%, #FFCFBF 55%, #FF8E53 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            fontSize: "2.6rem",
+            fontWeight: 900,
+            letterSpacing: "-0.03em",
+            lineHeight: 1.05,
+          }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.45, duration: 0.55, ease: "easeOut" }}
         >
-          Your Diabetes Buddy awaits! 🌟
-        </motion.h2>
+          Sugar Buddy
+        </motion.h1>
 
-        {/* Subtitle */}
+        {/* Tagline */}
         <motion.p
-          className="text-[0.95rem] text-center mb-10 px-6"
-          style={{ color: "#8A8498" }}
+          style={{
+            color: "rgba(255,255,255,0.38)",
+            fontSize: "0.88rem",
+            fontWeight: 500,
+            letterSpacing: "0.015em",
+            textAlign: "center",
+          }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
+          transition={{ delay: 0.72, duration: 0.55 }}
         >
-          Track glucose. Feel supported. Never alone.
+          Your glucose. Your buddy. Your way.
         </motion.p>
-
-        {/* Feature Pills */}
-        <motion.div
-          className="flex flex-wrap gap-3 justify-center px-6 mb-8"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2 }}
-        >
-          {features.map((feature, i) => (
-            <motion.div
-              key={i}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-full"
-              style={{
-                background: "white",
-                boxShadow: "0 2px 12px rgba(162, 155, 254, 0.15)",
-              }}
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.4 + i * 0.1 }}
-            >
-              <span className="text-[1.1rem]">{feature.emoji}</span>
-              <span
-                className="text-[0.8rem]"
-                style={{ color: "#4A4A6A", fontWeight: 600 }}
-              >
-                {feature.text}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
 
-      {/* Bottom CTA */}
-      <div className="px-6 pb-10 relative z-10">
+      {/* ── Button pinned to bottom ── */}
+      <div className="px-6 pb-14 relative z-10">
         <motion.button
           onClick={onContinue}
-          className="w-full py-4.5 rounded-2xl text-[1.05rem] flex items-center justify-center gap-2"
+          className="w-full relative overflow-hidden rounded-2xl flex items-center justify-center"
           style={{
-            background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)",
-            color: "white",
+            height: 62,
+            background: "linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)",
+            fontFamily: "Nunito, sans-serif",
             fontWeight: 800,
-            boxShadow: "0 6px 20px rgba(255, 107, 107, 0.35)",
+            fontSize: "1.08rem",
+            color: "white",
+            border: "none",
+            outline: "none",
           }}
-          whileTap={{ scale: 0.97 }}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6 }}
+          transition={{ delay: 1.0, duration: 0.55, ease: "easeOut" }}
+          whileTap={{ scale: 0.97 }}
         >
-          Let's Go! 🎉
+          {/* Warm inner glow — top highlight */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 55%)",
+            }}
+          />
+          {/* Bottom warm undertone */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: "linear-gradient(0deg, rgba(255,80,30,0.25) 0%, transparent 60%)",
+            }}
+          />
+          {/* Outer glow via box-shadow — animated */}
+          <motion.div
+            className="absolute inset-0 rounded-2xl pointer-events-none"
+            animate={{
+              boxShadow: [
+                "0 6px 28px rgba(255,107,107,0.38)",
+                "0 6px 44px rgba(255,107,107,0.62)",
+                "0 6px 28px rgba(255,107,107,0.38)",
+              ],
+            }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+          />
+          <span className="relative z-10">Let's Go! 🎉</span>
         </motion.button>
       </div>
     </div>
